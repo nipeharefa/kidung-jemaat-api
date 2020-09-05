@@ -17,7 +17,6 @@
     "vercel": "^20.1.0"
   },
   "scripts": {
-    "build": "tsc",
     "lint": "prettier --check ."
   },
   "husky": {
