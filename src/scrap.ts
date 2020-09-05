@@ -2,81 +2,88 @@ import cheerio from 'cheerio';
 import axios from 'axios';
 
 interface LyricStruct {
-    element: string
-    content: string
+  element: string;
+  content: string;
 }
 
 interface Song {
-    title: string
-    lyrics: Array<LyricStruct>
-};
-
-
-const sanitazeCherElement = ($: CheerioStatic, e: CheerioElement) : Array<string> =>{
-    let t = $(e).text();
-
-    let b = t.split("\n")
-
-    b = b.filter(v => v !== '')
-        .map((v : string) : string => {
-            return v.trim();
-        }).filter(v => v !== '')
-        .filter(v => v != 'Play');
-
-    return b;
+  title: string;
+  lyrics: Array<LyricStruct>;
 }
 
-const convertToSongStruct = (a: Array<string>) : LyricStruct => {
+const sanitazeCherElement = (
+  $: CheerioStatic,
+  e: CheerioElement
+): Array<string> => {
+  let t = $(e).text();
 
-    let el : string = "verse";
+  let b = t.split('\n');
 
-    if (a[0] === "Reff:") {
-        el = "reff"
-    }
-    
-    let obj : LyricStruct = {
-        element: el,
-        content: a[1],
-    }
+  b = b
+    .filter((v) => v !== '')
+    .map((v: string): string => {
+      return v.trim();
+    })
+    .filter((v) => v !== '')
+    .filter((v) => v != 'Play');
 
-    return obj
+  return b;
 };
 
-const main = async() => {
-    try {
-        let data = await axios.get('https://alkitab.mobi/kidung/kj/1');
-        let htmlData = data.data;
+const convertToSongStruct = (a: Array<string>): LyricStruct => {
+  let el: string = 'verse';
 
-        let $ = cheerio.load(htmlData);
-        let a = $('p.paragraphtitle');
-        let cc = a.nextUntil('hr');
+  if (a[0] === 'Reff:') {
+    el = 'reff';
+  }
 
-        let title : string = $('title').text()
-            .replace(/KJ\s([0-9]{1,3}\s-\s)/, '');
+  let obj: LyricStruct = {
+    element: el,
+    content: a[1]
+  };
 
-        let song : Song = {
-            title: '',
-            lyrics: [],
-        };
+  return obj;
+};
 
-        song.title = title;
-        
+const main = async (id: string) => {
+  try {
+    let data = await axios.get(`https://alkitab.mobi/kidung/kj/${id}`);
+    let htmlData = data.data;
 
-        cc.each((_, v) => {
-            $(v).each((_, e) => {
-                let b = sanitazeCherElement($, e);
+    let $ = cheerio.load(htmlData);
+    let a = $('p.paragraphtitle');
+    let cc = a.nextUntil('hr');
 
-                if (b.length > 0) {
-                    let ss = convertToSongStruct(b);
-                    song.lyrics.push(ss);
-                }
-            })
-        });
+    let title: string = $('title')
+      .text()
+      .replace(/KJ\s([0-9]{1,3}\s-\s)/, '');
 
-        console.log(song);
-    } catch (error) {
-        throw error;
+    let song: Song = {
+      title: '',
+      lyrics: []
+    };
+
+    song.title = title;
+
+    cc.each((_, v) => {
+      $(v).each((_, e) => {
+        let b = sanitazeCherElement($, e);
+
+        if (b.length > 0) {
+          let ss = convertToSongStruct(b);
+          song.lyrics.push(ss);
+        }
+      });
+    });
+
+    return song;
+  } catch (error) {
+    if (process.env.NODE_ENV != 'production') {
+      throw error;
     }
-}
+  }
 
-main();
+  return {};
+};
+
+export default main;
