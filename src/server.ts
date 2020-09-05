@@ -24,7 +24,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     hello: () => 'world',
-    getSong: (root, args: any, context) => {
+    getSong: (__, args: any, _) => {
       const { id } = args;
       let a = scrap(id.toString());
       return a;
