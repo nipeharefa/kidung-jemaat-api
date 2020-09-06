@@ -1,5 +1,0 @@
-{
-  "version": 2,
-  "name": "kidung-jemaat-api",
-  "builds": [{ "src": "./build/main/index.js", "use": "@now/node-server" }]
-}

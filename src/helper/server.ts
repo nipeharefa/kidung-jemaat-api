@@ -1,4 +1,4 @@
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer, gql } from 'apollo-server-micro';
 import scrap from './scrap';
 
 // prettier-ignore
@@ -13,8 +13,6 @@ const typeDefs = gql`
     lyrics: [Lyric]
 	}
   type Query {
-    "A simple type for getting started!"
-    hello: String
     getSong(id: Int): Song
   }
 `;
@@ -23,8 +21,7 @@ const typeDefs = gql`
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    hello: () => 'world',
-    getSong: (root, args: any, context) => {
+    getSong: (__, args: any, _) => {
       const { id } = args;
       let a = scrap(id.toString());
       return a;
