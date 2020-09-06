@@ -1,0 +1,34 @@
+{
+  "ast": null,
+  "code": "import { ApolloServer, gql } from 'apollo-server-micro';\nconst typeDefs = gql`\n  type Query {\n    users: [User!]!\n  }\n  type User {\n    name: String\n  }\n`;\nconst resolvers = {\n  Query: {\n    users(parent, args, context) {\n      return [{\n        name: 'Nextjs'\n      }];\n    }\n\n  }\n};\nconst apolloServer = new ApolloServer({\n  typeDefs,\n  resolvers\n});\nexport const config = {\n  api: {\n    bodyParser: false\n  }\n};\nexport default apolloServer.createHandler({\n  path: '/api/graphql'\n});",
+  "map": {
+    "version": 3,
+    "sources": [
+      "/Users/nipeharefa/projects/BNKP/scrapping/src/pages/api/graphql.ts"
+    ],
+    "names": [
+      "ApolloServer",
+      "gql",
+      "typeDefs",
+      "resolvers",
+      "Query",
+      "users",
+      "parent",
+      "args",
+      "context",
+      "name",
+      "apolloServer",
+      "config",
+      "api",
+      "bodyParser",
+      "createHandler",
+      "path"
+    ],
+    "mappings": "AAAA,SAASA,YAAT,EAAuBC,GAAvB,QAAkC,qBAAlC;AAEA,MAAMC,QAAQ,GAAGD,GAAI;;;;;;;CAArB;AASA,MAAME,SAAS,GAAG;AAChBC,EAAAA,KAAK,EAAE;AACLC,IAAAA,KAAK,CAACC,MAAD,EAASC,IAAT,EAAeC,OAAf,EAAwB;AAC3B,aAAO,CAAC;AAAEC,QAAAA,IAAI,EAAE;AAAR,OAAD,CAAP;AACD;;AAHI;AADS,CAAlB;AAQA,MAAMC,YAAY,GAAG,IAAIV,YAAJ,CAAiB;AAAEE,EAAAA,QAAF;AAAYC,EAAAA;AAAZ,CAAjB,CAArB;AAEA,OAAO,MAAMQ,MAAM,GAAG;AACpBC,EAAAA,GAAG,EAAE;AACHC,IAAAA,UAAU,EAAE;AADT;AADe,CAAf;AAMP,eAAeH,YAAY,CAACI,aAAb,CAA2B;AAAEC,EAAAA,IAAI,EAAE;AAAR,CAA3B,CAAf",
+    "sourcesContent": [
+      "import { ApolloServer, gql } from 'apollo-server-micro'\n\nconst typeDefs = gql`\n  type Query {\n    users: [User!]!\n  }\n  type User {\n    name: String\n  }\n`\n\nconst resolvers = {\n  Query: {\n    users(parent, args, context) {\n      return [{ name: 'Nextjs' }]\n    },\n  },\n}\n\nconst apolloServer = new ApolloServer({ typeDefs, resolvers })\n\nexport const config = {\n  api: {\n    bodyParser: false,\n  },\n}\n\nexport default apolloServer.createHandler({ path: '/api/graphql' });"
+    ]
+  },
+  "metadata": {},
+  "sourceType": "module"
+}
