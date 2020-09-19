@@ -1,5 +1,6 @@
 import { ApolloServer, gql } from 'apollo-server-micro';
 import scrap from './scrap';
+import scaplist from './scrap_kj_list';
 
 // prettier-ignore
 // The GraphQL schema
@@ -11,9 +12,11 @@ const typeDefs = gql`
   type Song {
 		title: String
     lyrics: [Lyric]
+    id: Int
 	}
   type Query {
     getSong(id: Int): Song
+    getSongList: [Song]
   }
 `;
 
@@ -21,11 +24,16 @@ const typeDefs = gql`
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
+    hello: () => 'world',
     getSong: (__, args: any, _) => {
       const { id } = args;
       let a = scrap(id.toString());
       return a;
     }, 
+    getSongList: (__, args: any, _) => {
+      // scaplist();
+      return scaplist();
+    }
   },
 };
 

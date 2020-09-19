@@ -9,6 +9,7 @@ interface LyricStruct {
 interface Song {
   title: string;
   lyrics: Array<LyricStruct>;
+  id: number;
 }
 
 const sanitazeCherElement = (
@@ -58,9 +59,12 @@ const main = async (id: string) => {
       .text()
       .replace(/KJ\s([0-9]{1,3}\s-\s)/, '');
 
+    let idNumber = parseInt(id) || 0;
+
     let song: Song = {
       title: '',
-      lyrics: []
+      lyrics: [],
+      id: idNumber
     };
 
     song.title = title;
