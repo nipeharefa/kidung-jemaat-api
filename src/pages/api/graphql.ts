@@ -7,7 +7,14 @@ export const config = {
   }
 };
 
-const handler = apolloServer.createHandler({ path: '/api/graphql' });
+const handlerGQL = apolloServer.createHandler({ path: '/api/graphql' });
 
-// let b = cors();
-export default cors()(handler);
+let handler = (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.end();
+    return;
+  }
+  return handlerGQL(req, res);
+};
+
+export default handler;
