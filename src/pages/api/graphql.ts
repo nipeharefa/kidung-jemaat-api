@@ -1,3 +1,4 @@
+import cors from 'micro-cors';
 import apolloServer from '../../helper/server';
 
 export const config = {
@@ -6,4 +7,7 @@ export const config = {
   }
 };
 
-export default apolloServer.createHandler({ path: '/api/graphql' });
+const handler = apolloServer.createHandler({ path: '/api/graphql' });
+
+// let b = cors();
+export default cors()(handler);
