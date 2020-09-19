@@ -24,7 +24,6 @@ const typeDefs = gql`
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    hello: () => 'world',
     getSong: (__, args: any, _) => {
       const { id } = args;
       let a = scrap(id.toString());
