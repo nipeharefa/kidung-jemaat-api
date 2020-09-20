@@ -17,4 +17,4 @@ let handler = (req, res) => {
   return handlerGQL(req, res);
 };
 
-export default handler;
+export default cors()(handler);
